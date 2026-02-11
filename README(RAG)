@@ -1,0 +1,57 @@
+# Agentic AI Assignment: RAG Implementation
+
+## 📌 Project Overview
+This project implements a **Retrieval-Augmented Generation (RAG)** pipeline capable of answering questions based on a specific knowledge base. Unlike standard LLMs that can hallucinate, this system grounds its answers in provided context using vector similarity search.
+
+The project demonstrates the core components of Agentic AI:
+1.  **Ingesting** technical knowledge (Deep Learning, RAG, Agentic AI concepts).
+2.  **Indexing** knowledge using vector embeddings.
+3.  **Retrieving** relevant context dynamically.
+4.  **Generating** accurate answers using a local LLM.
+
+## 🚀 Features
+* **Local Execution:** Runs entirely on CPU/GPU without external API keys (using Hugging Face models).
+* **Vector Search:** Uses **FAISS** for high-speed similarity search.
+* **RAG Pipeline:** Implements a modern LCEL (LangChain Expression Language) chain.
+* **Interactive UI:** Includes an optional `Streamlit` interface for easy testing.
+
+## 🛠️ Tech Stack
+* **Language:** Python 3.10+
+* **Framework:** LangChain (Community & Core)
+* **Vector Database:** FAISS (Facebook AI Similarity Search)
+* **Embeddings:** `sentence-transformers/all-MiniLM-L6-v2`
+* **LLM:** `google/flan-t5-base`
+* **Interface:** Streamlit (Optional)
+
+## ⚙️ Installation
+
+1.  **Clone the repository** (or unzip the project folder).
+2.  **Install dependencies:**
+    ```bash
+    pip install -U langchain-community langchain-huggingface faiss-cpu sentence-transformers transformers torch accelerate streamlit
+    ```
+
+## 📖 How to Run
+
+### Option 1: Run the Notebook (Analysis)
+Open `Agentic_HW.ipynb` in Jupyter Notebook or Google Colab and run all cells to see the step-by-step pipeline construction and test query outputs.
+
+### Option 2: Run the Web App (Bonus)
+To launch the interactive chat interface:
+```bash
+streamlit run app.py
+🧠 Architecture Details
+Data Source: Custom technical corpus (simulating parsed PDF content).
+
+Chunking: Recursive Character Splitter (Size: 200, Overlap: 20).
+
+Retrieval: Top-2 similar chunks using L2 distance.
+
+Model: Flan-T5 Base (250M parameters) - chosen for efficiency and instruction-following capability.
+
+🔮 Future Improvements
+Integration with PDFPlumber for dynamic file uploading.
+
+Implementation of Hybrid Search (combining Keyword + Vector search).
+
+Upgrading to a larger model (e.g., Llama-3-8B) for more complex reasoning.
