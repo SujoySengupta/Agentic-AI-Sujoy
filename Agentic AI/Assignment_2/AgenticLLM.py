@@ -5,8 +5,12 @@ from langchain_community.tools import DuckDuckGoSearchResults
 from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import HumanMessage
 
+# --- 1. THE CUSTOM KNOWLEDGE TOOL (ZERO PIP INSTALLS) ---
 @tool
 def read_local_knowledge(query: str) -> str:
+    """Use this tool to search the local knowledge base for foundational information."""
+    # This completely bypasses the broken Wikipedia package.
+    # It creates a local knowledge file if it doesn't exist, and reads from it.
     filename = "knowledge_base.txt"
     if not os.path.exists(filename):
         with open(filename, "w", encoding="utf-8") as f:
@@ -16,14 +20,17 @@ def read_local_knowledge(query: str) -> str:
         return f.read()
 
 def run_local_research_agent(topic: str):
-
+    # 2. Initialize local Ollama 
     llm = ChatOllama(model="llama3.1", temperature=0)
 
+    # 3. Define Tools (DuckDuckGo + Our Custom No-Install Tool)
     search = DuckDuckGoSearchResults()
     tools = [search, read_local_knowledge]
 
+    # 4. Construct the Agent
     agent = create_react_agent(llm, tools=tools)
-
+    
+    # 5. Strict System Prompt
     system_instructions = f"""
     You are an autonomous research agent. Your task is to research: '{topic}'
     
@@ -64,6 +71,7 @@ def run_local_research_agent(topic: str):
     except Exception as e:
         return f"An error occurred during agent execution: {e}"
 
+# --- Execution ---
 if __name__ == "__main__":
     user_topic = input("Enter a research topic (e.g., 'Impact of AI in Healthcare'): ")
     
